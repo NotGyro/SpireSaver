@@ -3,14 +3,6 @@
 version = 3
 
 [[package]]
-name = "SpireSaver"
-version = "0.1.0"
-dependencies = [
- "base64",
- "clap",
-]
-
-[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -143,6 +135,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bbe448f377a7d6961e30f5955f9b8d106c3f5e449d493ee1b125c1d43c2b5179"
 dependencies = [
  "proc-macro2",
+]
+
+[[package]]
+name = "spire_saver"
+version = "0.1.0"
+dependencies = [
+ "base64",
+ "clap",
 ]
 
 [[package]]

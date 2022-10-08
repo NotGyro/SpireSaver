@@ -1,8 +1,8 @@
 #![feature(fs_try_exists)]
 
-use std::{fmt::Debug, fs::{File, OpenOptions}, io::{Read, Write}, path::{Path, PathBuf}};
+use std::{fmt::Debug, fs::{File, OpenOptions}, io::{Read, Write}, path::PathBuf};
 
-use clap::{Parser, Command, Subcommand, command, arg};
+use clap::{Parser, Subcommand, command};
 
 #[derive(Subcommand, Debug)]
 enum Commands {
@@ -36,8 +36,6 @@ fn spire_encoder_decoder(arguments: &Args) -> Option<String> {
     // The key is "key". because f u n y 
     let key_text = String::from("key");
     let key = key_text.as_bytes();
-
-    println!("Parsing {}", &arguments.input);
 
     let input_path = PathBuf::from(&arguments.input); 
     //Make error handling more informative.
@@ -85,14 +83,12 @@ fn spire_encoder_decoder(arguments: &Args) -> Option<String> {
             }
         }
         Commands::Obf => {
-            let enciphered_bytes: Vec<u8> = xor_with_key(input_text.as_ref(), &key); 
-            let display_bytes = String::from_utf8_lossy(&enciphered_bytes); 
-            println!("Obfuscated {} into {}", &input_text, display_bytes);
+            let enciphered_bytes: Vec<u8> = xor_with_key(input_text.as_ref(), &key);
+
             let b64_encoded = base64::encode(&enciphered_bytes);
 
             match &arguments.output_file { 
                 Some(filename) => {
-                    println!("Encoded to base64: {}", &b64_encoded);
                     let mut file = OpenOptions::new()
                         .create(true)
                         .write(true)
@@ -100,7 +96,7 @@ fn spire_encoder_decoder(arguments: &Args) -> Option<String> {
                         .open(&filename)
                         .unwrap();
                     let len_wrote = file.write(b64_encoded.as_bytes()).unwrap();
-                    println!("Wrote {} deobfuscated bytes to {}", len_wrote, &filename);
+                    println!("Wrote {} obfuscated bytes to {}", len_wrote, &filename);
                     None
                 }
                 None => Some(b64_encoded),
